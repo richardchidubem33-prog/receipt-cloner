@@ -50,16 +50,18 @@ export default function Home() {
         }),
       });
       if (!res.ok) throw new Error("Generate failed");
-      const blob = await res.blob();
+      const html = await res.text();
       const clean = res.headers.get("X-Clean") === "1";
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `receipt_${platform}_${Date.now()}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
+      const w = window.open("", "_blank");
+      if (w) {
+        w.document.write(html);
+        w.document.close();
+      } else {
+        const blob = new Blob([html], { type: "text/html" });
+        window.location.href = URL.createObjectURL(blob);
+      }
       if (!clean) {
-        alert("Watermarked receipt downloaded.\nPay $2 USDT and submit a ticket to unlock clean receipts.");
+        setTimeout(() => alert("Watermarked. Pay $2 USDT + ticket to unlock clean receipts."), 400);
       }
     } catch (e: any) {
       alert(e.message);
@@ -149,7 +151,7 @@ export default function Home() {
             </div>
             <div className="field">
               <label>Network</label>
-              <input placeholder="e.g. BNB Smart Chain (BEP20)" value={form.network} onChange={(e) => update("network", e.target.value)} />
+              <input placeholder="e.g. TRX / BEP20" value={form.network} onChange={(e) => update("network", e.target.value)} />
             </div>
             <div className="field">
               <label>To Address</label>
@@ -172,6 +174,10 @@ export default function Home() {
               <label>Bank</label>
               <input value={form.bank} onChange={(e) => update("bank", e.target.value)} />
             </div>
+            <div className="field">
+              <label>From (Sender)</label>
+              <input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} />
+            </div>
           </>
         )}
 
@@ -189,16 +195,10 @@ export default function Home() {
         )}
 
         {platform === "applepay" && (
-          <>
-            <div className="field">
-              <label>Merchant</label>
-              <input value={form.toName} onChange={(e) => update("toName", e.target.value)} />
-            </div>
-            <div className="field">
-              <label>Card</label>
-              <input placeholder="Apple Card •••• 4242" value={form.fromName} onChange={(e) => update("fromName", e.target.value)} />
-            </div>
-          </>
+          <div className="field">
+            <label>Name / Merchant</label>
+            <input value={form.toName} onChange={(e) => update("toName", e.target.value)} />
+          </div>
         )}
 
         <div className="field">
@@ -222,13 +222,13 @@ export default function Home() {
             marginTop: 8,
           }}
         >
-          {loading ? "Generating..." : "Generate Receipt"}
+          {loading ? "Generating..." : "Open Receipt UI"}
         </button>
       </div>
 
       <p style={{ textAlign: "center", color: "#666", fontSize: 12, marginTop: 20 }}>
-        Free receipts are watermarked.{" "}
-        <Link href="/pay" style={{ color: "#aaa" }}>Pay $2 USDT</Link> to unlock clean ones.
+        Opens full mobile-style receipt. Free = watermarked.{" "}
+        <Link href="/pay" style={{ color: "#aaa" }}>Pay $2 USDT</Link> to unlock clean.
       </p>
     </div>
   );

@@ -86,9 +86,7 @@ export async function listKeys(): Promise<AccessKey[]> {
   return readJson<AccessKey[]>(KEYS_FILE, []);
 }
 
-export async function createAccessKey(
-  ticket: Ticket
-): Promise<AccessKey> {
+export async function createAccessKey(ticket: Ticket): Promise<AccessKey> {
   const keys = await listKeys();
   const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
   const now = new Date();
@@ -118,6 +116,31 @@ export async function createAccessKey(
     expiresAt,
   });
 
+  return accessKey;
+}
+
+export async function createFreeAccessKey(
+  plan: "days" | "receipts",
+  quantity: number
+): Promise<AccessKey> {
+  const keys = await listKeys();
+  const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
+  const now = new Date();
+  let expiresAt: string | undefined;
+  let remaining = quantity;
+  if (plan === "days") {
+    expiresAt = new Date(now.getTime() + quantity * 24 * 60 * 60 * 1000).toISOString();
+  }
+  const accessKey: AccessKey = {
+    key,
+    plan,
+    remaining,
+    expiresAt,
+    createdAt: now.toISOString(),
+    ticketId: "admin-direct",
+  };
+  keys.push(accessKey);
+  await writeJson(KEYS_FILE, keys);
   return accessKey;
 }
 

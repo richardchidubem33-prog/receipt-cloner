@@ -12,6 +12,7 @@ const PLATFORMS = [
   { id: "trustwallet", name: "Trust Wallet", color: "#3375BB" },
   { id: "coinbase", name: "Coinbase", color: "#0052FF" },
   { id: "binance", name: "Binance", color: "#F0B90B" },
+  { id: "kuda", name: "Kuda", color: "#40196D" },
 ];
 
 export default function Home() {
@@ -82,7 +83,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 28 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 28 }}>
         {PLATFORMS.map((pl) => (
           <button
             key={pl.id}
@@ -112,7 +113,7 @@ export default function Home() {
           <input type="number" placeholder="0.00" value={form.amount} onChange={(e) => update("amount", e.target.value)} />
         </div>
 
-        {(platform === "opay" || platform === "paypal" || platform === "zelle" || platform === "cashapp" || platform === "applepay") && (
+        {(platform === "opay" || platform === "kuda" || platform === "paypal" || platform === "zelle" || platform === "cashapp" || platform === "applepay") && (
           <div className="field">
             <label>Currency</label>
             <select value={form.currency} onChange={(e) => update("currency", e.target.value)}>
@@ -153,6 +154,15 @@ export default function Home() {
             <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>
             <div className="field"><label>Bank</label><input value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
             <div className="field"><label>From (Sender)</label><input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} /></div>
+          </>
+        )}
+
+        {platform === "kuda" && (
+          <>
+            <div className="field"><label>Recipient Name</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
+            <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>
+            <div className="field"><label>Bank / To</label><input placeholder="e.g. PALMPAY" value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
+            <div className="field"><label>Transaction Ref (optional)</label><input value={form.remark} onChange={(e) => update("remark", e.target.value)} /></div>
           </>
         )}
 

@@ -18,6 +18,7 @@ export default function Home() {
   const [platform, setPlatform] = useState("opay");
   const [accessKey, setAccessKey] = useState("");
   const [loading, setLoading] = useState(false);
+  const [dark, setDark] = useState(false);
   const [form, setForm] = useState<any>({
     amount: "",
     currency: "NGN",
@@ -47,6 +48,7 @@ export default function Home() {
           ...form,
           amount: parseFloat(form.amount) || 0,
           accessKey: accessKey || null,
+          dark,
         }),
       });
       if (!res.ok) throw new Error("Generate failed");
@@ -100,25 +102,9 @@ export default function Home() {
         ))}
       </div>
 
-      <div
-        className="card"
-        style={{
-          borderTop: `4px solid ${p.color}`,
-          background: platform === "applepay" ? "#111" : "#161616",
-        }}
-      >
+      <div className="card" style={{ borderTop: `4px solid ${p.color}`, background: platform === "applepay" ? "#111" : "#161616" }}>
         <div style={{ textAlign: "center", marginBottom: 20 }}>
           <div style={{ fontSize: 18, fontWeight: 700, color: p.color }}>{p.name}</div>
-          <div style={{ fontSize: 13, color: "#888", marginTop: 4 }}>
-            {platform === "opay" && "Transfer to Bank"}
-            {platform === "paypal" && "Send Money"}
-            {platform === "zelle" && "Send with Zelle"}
-            {platform === "cashapp" && "Pay with Cash App"}
-            {platform === "applepay" && "Apple Pay"}
-            {platform === "trustwallet" && "Send Crypto"}
-            {platform === "coinbase" && "Send Crypto"}
-            {platform === "binance" && "Withdraw"}
-          </div>
         </div>
 
         <div className="field">
@@ -133,6 +119,7 @@ export default function Home() {
               <option value="NGN">NGN</option>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
             </select>
           </div>
         )}
@@ -162,48 +149,29 @@ export default function Home() {
 
         {platform === "opay" && (
           <>
-            <div className="field">
-              <label>Account Name</label>
-              <input value={form.toName} onChange={(e) => update("toName", e.target.value)} />
-            </div>
-            <div className="field">
-              <label>Account Number</label>
-              <input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} />
-            </div>
-            <div className="field">
-              <label>Bank</label>
-              <input value={form.bank} onChange={(e) => update("bank", e.target.value)} />
-            </div>
-            <div className="field">
-              <label>From (Sender)</label>
-              <input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} />
-            </div>
+            <div className="field"><label>Account Name</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
+            <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>
+            <div className="field"><label>Bank</label><input value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
+            <div className="field"><label>From (Sender)</label><input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} /></div>
           </>
         )}
 
         {(platform === "paypal" || platform === "zelle" || platform === "cashapp") && (
           <>
-            <div className="field">
-              <label>To (Name / Handle)</label>
-              <input value={form.toName} onChange={(e) => update("toName", e.target.value)} />
-            </div>
-            <div className="field">
-              <label>From</label>
-              <input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} />
-            </div>
+            <div className="field"><label>To (Name / Handle)</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
+            <div className="field"><label>From</label><input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} /></div>
           </>
         )}
 
         {platform === "applepay" && (
-          <div className="field">
-            <label>Name / Merchant</label>
-            <input value={form.toName} onChange={(e) => update("toName", e.target.value)} />
-          </div>
+          <div className="field"><label>Name / Merchant</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
         )}
 
-        <div className="field">
-          <label>Note / Remark</label>
-          <input value={form.remark} onChange={(e) => update("remark", e.target.value)} />
+        <div className="field"><label>Note / Remark</label><input value={form.remark} onChange={(e) => update("remark", e.target.value)} /></div>
+
+        <div className="field" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <input type="checkbox" id="dark" checked={dark} onChange={(e) => setDark(e.target.checked)} style={{ width: 18, height: 18 }} />
+          <label htmlFor="dark" style={{ margin: 0, textTransform: "none", letterSpacing: 0, fontSize: 14, color: "#ccc" }}>Dark theme receipt</label>
         </div>
 
         <div className="field">
@@ -211,23 +179,14 @@ export default function Home() {
           <input placeholder="RC-XXXXXXXXXXXXXXXX" value={accessKey} onChange={(e) => setAccessKey(e.target.value)} />
         </div>
 
-        <button
-          className="btn"
-          onClick={generate}
-          disabled={loading || !form.amount}
-          style={{
-            width: "100%",
-            background: p.color,
-            color: platform === "binance" || platform === "cashapp" ? "#111" : "#fff",
-            marginTop: 8,
-          }}
-        >
+        <button className="btn" onClick={generate} disabled={loading || !form.amount}
+          style={{ width: "100%", background: p.color, color: platform === "binance" || platform === "cashapp" ? "#111" : "#fff", marginTop: 8 }}>
           {loading ? "Generating..." : "Open Receipt UI"}
         </button>
       </div>
 
       <p style={{ textAlign: "center", color: "#666", fontSize: 12, marginTop: 20 }}>
-        Opens full mobile-style receipt. Free = watermarked.{" "}
+        Full mobile receipt UI · logos · animations · dark mode.{" "}
         <Link href="/pay" style={{ color: "#aaa" }}>Pay $2 USDT</Link> to unlock clean.
       </p>
     </div>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateReceiptPDF } from "@/lib/pdf";
+import { buildReceiptHTML } from "@/lib/receipts";
 import { validateKey, consumeKey } from "@/lib/store";
 
 export async function POST(req: NextRequest) {
@@ -16,12 +16,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const pdfBytes = await generateReceiptPDF(body, clean);
-    return new NextResponse(Buffer.from(pdfBytes), {
+    const html = buildReceiptHTML(body, clean);
+    return new NextResponse(html, {
       status: 200,
       headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="receipt_${body.platform || "gen"}.pdf"`,
+        "Content-Type": "text/html; charset=utf-8",
         "X-Clean": clean ? "1" : "0",
       },
     });

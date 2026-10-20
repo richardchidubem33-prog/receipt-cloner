@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listTickets, updateTicket, createAccessKey } from "@/lib/store";
+import { listTickets, updateTicket, createAccessKey, createFreeAccessKey } from "@/lib/store";
 
 const ADMIN_CODE = process.env.ADMIN_CODE || "Richardx9";
 
@@ -22,7 +22,15 @@ export async function POST(req: NextRequest) {
   }
   try {
     const body = await req.json();
-    const { ticketId, action } = body;
+    const { ticketId, action, generate, plan, quantity } = body;
+
+    if (generate === true) {
+      const p = plan === "days" ? "days" : "receipts";
+      const q = Math.max(1, Math.min(365, Number(quantity) || 1));
+      const key = await createFreeAccessKey(p, q);
+      return NextResponse.json({ accessKey: key });
+    }
+
     if (!ticketId || !["approve", "reject"].includes(action)) {
       return NextResponse.json({ error: "Bad request" }, { status: 400 });
     }

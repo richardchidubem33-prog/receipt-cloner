@@ -17,9 +17,10 @@ const PLATFORMS = [
   { id: "gtbank", name: "GTBank", color: "#e85d04" },
   { id: "fidelity", name: "Fidelity", color: "#1a5fb4" },
   { id: "uba", name: "UBA", color: "#d32f2f" },
+  { id: "uba2", name: "UBA 2", color: "#c41e3a" },
 ];
 
-const BANK_IDS = ["opay", "kuda", "firstbank", "gtbank", "fidelity", "uba"];
+const BANK_IDS = ["opay", "kuda", "firstbank", "gtbank", "fidelity", "uba", "uba2"];
 
 export default function Home() {
   const [platform, setPlatform] = useState("opay");
@@ -178,7 +179,7 @@ export default function Home() {
           </>
         )}
 
-        {(platform === "firstbank" || platform === "gtbank" || platform === "fidelity" || platform === "uba") && (
+        {(platform === "firstbank" || platform === "gtbank" || platform === "fidelity" || platform === "uba" || platform === "uba2") && (
           <>
             <div className="field"><label>Beneficiary / Receiver Name</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
             <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>

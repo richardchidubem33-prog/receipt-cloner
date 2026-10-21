@@ -13,7 +13,13 @@ const PLATFORMS = [
   { id: "coinbase", name: "Coinbase", color: "#0052FF" },
   { id: "binance", name: "Binance", color: "#F0B90B" },
   { id: "kuda", name: "Kuda", color: "#40196D" },
+  { id: "firstbank", name: "FirstBank", color: "#1a237e" },
+  { id: "gtbank", name: "GTBank", color: "#e85d04" },
+  { id: "fidelity", name: "Fidelity", color: "#1a5fb4" },
+  { id: "uba", name: "UBA", color: "#d32f2f" },
 ];
+
+const BANK_IDS = ["opay", "kuda", "firstbank", "gtbank", "fidelity", "uba"];
 
 export default function Home() {
   const [platform, setPlatform] = useState("opay");
@@ -36,6 +42,12 @@ export default function Home() {
 
   function update(key: string, val: string) {
     setForm((f: any) => ({ ...f, [key]: val }));
+  }
+
+  function selectPlatform(id: string) {
+    setPlatform(id);
+    if (BANK_IDS.includes(id)) update("currency", "NGN");
+    if (id === "binance" || id === "trustwallet" || id === "coinbase") update("currency", "USDT");
   }
 
   async function generate() {
@@ -87,7 +99,7 @@ export default function Home() {
         {PLATFORMS.map((pl) => (
           <button
             key={pl.id}
-            onClick={() => setPlatform(pl.id)}
+            onClick={() => selectPlatform(pl.id)}
             style={{
               padding: "12px 6px",
               borderRadius: 12,
@@ -113,7 +125,7 @@ export default function Home() {
           <input type="number" placeholder="0.00" value={form.amount} onChange={(e) => update("amount", e.target.value)} />
         </div>
 
-        {(platform === "opay" || platform === "kuda" || platform === "paypal" || platform === "zelle" || platform === "cashapp" || platform === "applepay") && (
+        {(BANK_IDS.includes(platform) || platform === "paypal" || platform === "zelle" || platform === "cashapp" || platform === "applepay") && (
           <div className="field">
             <label>Currency</label>
             <select value={form.currency} onChange={(e) => update("currency", e.target.value)}>
@@ -166,6 +178,16 @@ export default function Home() {
           </>
         )}
 
+        {(platform === "firstbank" || platform === "gtbank" || platform === "fidelity" || platform === "uba") && (
+          <>
+            <div className="field"><label>Beneficiary / Receiver Name</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
+            <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>
+            <div className="field"><label>Bank</label><input placeholder="e.g. GTB / Access" value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
+            <div className="field"><label>Sender Name</label><input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} /></div>
+            <div className="field"><label>Narration / Reference</label><input value={form.remark} onChange={(e) => update("remark", e.target.value)} /></div>
+          </>
+        )}
+
         {(platform === "paypal" || platform === "zelle" || platform === "cashapp") && (
           <>
             <div className="field"><label>To (Name / Handle)</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
@@ -189,14 +211,23 @@ export default function Home() {
           <input placeholder="RC-XXXXXXXXXXXXXXXX" value={accessKey} onChange={(e) => setAccessKey(e.target.value)} />
         </div>
 
-        <button className="btn" onClick={generate} disabled={loading || !form.amount}
-          style={{ width: "100%", background: p.color, color: platform === "binance" || platform === "cashapp" ? "#111" : "#fff", marginTop: 8 }}>
+        <button
+          className="btn"
+          onClick={generate}
+          disabled={loading || !form.amount}
+          style={{
+            width: "100%",
+            background: p.color,
+            color: platform === "binance" || platform === "cashapp" ? "#111" : "#fff",
+            marginTop: 8,
+          }}
+        >
           {loading ? "Generating..." : "Open Receipt UI"}
         </button>
       </div>
 
       <p style={{ textAlign: "center", color: "#666", fontSize: 12, marginTop: 20 }}>
-        Full mobile receipt UI · logos · animations · dark mode.{" "}
+        Full mobile receipt UI · logos · animations.{" "}
         <Link href="/pay" style={{ color: "#aaa" }}>Pay $2 USDT</Link> to unlock clean.
       </p>
     </div>

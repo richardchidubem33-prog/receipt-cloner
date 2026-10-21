@@ -24,7 +24,7 @@ export type Ticket = {
 export type AccessKey = {
   key: string;
   plan: "days" | "receipts";
-  remaining: number;
+  remaining: number; // days left or receipts left
   expiresAt?: string;
   createdAt: string;
   ticketId: string;
@@ -86,17 +86,21 @@ export async function listKeys(): Promise<AccessKey[]> {
   return readJson<AccessKey[]>(KEYS_FILE, []);
 }
 
-export async function createAccessKey(ticket: Ticket): Promise<AccessKey> {
+export async function createAccessKey(
+  ticket: Ticket
+): Promise<AccessKey> {
   const keys = await listKeys();
   const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
   const now = new Date();
   let expiresAt: string | undefined;
-  let remaining = ticket.quantity;
+  // Boost low quantities so serverless /tmp resets + testing don't burn keys in 2 uses
+  let remaining = ticket.plan === "receipts"
+    ? Math.max(50, ticket.quantity)
+    : Math.max(7, ticket.quantity);
 
   if (ticket.plan === "days") {
-    const exp = new Date(now.getTime() + ticket.quantity * 24 * 60 * 60 * 1000);
+    const exp = new Date(now.getTime() + remaining * 24 * 60 * 60 * 1000);
     expiresAt = exp.toISOString();
-    remaining = ticket.quantity;
   }
 
   const accessKey: AccessKey = {
@@ -119,6 +123,7 @@ export async function createAccessKey(ticket: Ticket): Promise<AccessKey> {
   return accessKey;
 }
 
+
 export async function createFreeAccessKey(
   plan: "days" | "receipts",
   quantity: number
@@ -127,9 +132,10 @@ export async function createFreeAccessKey(
   const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
   const now = new Date();
   let expiresAt: string | undefined;
-  let remaining = quantity;
+  // receipts: floor of 50 so keys don't die after 2 tests; days: min 7
+  let remaining = plan === "receipts" ? Math.max(50, quantity) : Math.max(7, quantity);
   if (plan === "days") {
-    expiresAt = new Date(now.getTime() + quantity * 24 * 60 * 60 * 1000).toISOString();
+    expiresAt = new Date(now.getTime() + remaining * 24 * 60 * 60 * 1000).toISOString();
   }
   const accessKey: AccessKey = {
     key,
@@ -164,5 +170,6 @@ export async function consumeKey(key: string): Promise<boolean> {
     keys[idx] = k;
     await writeJson(KEYS_FILE, keys);
   }
+  // days plan: just check expiry, no consume
   return true;
 }

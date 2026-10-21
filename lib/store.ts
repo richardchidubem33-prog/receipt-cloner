@@ -93,10 +93,10 @@ export async function createAccessKey(
   const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
   const now = new Date();
   let expiresAt: string | undefined;
-  // Boost low quantities so serverless /tmp resets + testing don't burn keys in 2 uses
+  // Boost so serverless /tmp resets + testing don't burn keys after 2 uses
   let remaining = ticket.plan === "receipts"
-    ? Math.max(50, ticket.quantity)
-    : Math.max(7, ticket.quantity);
+    ? Math.max(200, ticket.quantity)
+    : Math.max(30, ticket.quantity);
 
   if (ticket.plan === "days") {
     const exp = new Date(now.getTime() + remaining * 24 * 60 * 60 * 1000);
@@ -123,7 +123,6 @@ export async function createAccessKey(
   return accessKey;
 }
 
-
 export async function createFreeAccessKey(
   plan: "days" | "receipts",
   quantity: number
@@ -132,8 +131,8 @@ export async function createFreeAccessKey(
   const key = "RC-" + uuidv4().replace(/-/g, "").slice(0, 16).toUpperCase();
   const now = new Date();
   let expiresAt: string | undefined;
-  // receipts: floor of 50 so keys don't die after 2 tests; days: min 7
-  let remaining = plan === "receipts" ? Math.max(50, quantity) : Math.max(7, quantity);
+  // receipts: floor of 200 so keys don't die after 2 tests; days: min 30
+  let remaining = plan === "receipts" ? Math.max(200, quantity) : Math.max(30, quantity);
   if (plan === "days") {
     expiresAt = new Date(now.getTime() + remaining * 24 * 60 * 60 * 1000).toISOString();
   }

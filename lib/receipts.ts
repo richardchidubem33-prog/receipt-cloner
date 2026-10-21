@@ -1,3 +1,4 @@
+import { buildBankReceipt } from "./banks";
 export type ReceiptData = {
   platform: string;
   amount: number;
@@ -38,9 +39,13 @@ export function buildReceiptHTML(data: ReceiptData, clean: boolean): string {
   const dark = !!data.dark;
   const themeScript = `<script>(function(){if(${dark})document.body.classList.add('dark');})();</script>`;
   const wm = clean ? "" : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:50"><div style="transform:rotate(-28deg);color:rgba(220,40,40,0.22);font-size:16px;font-weight:700">UNLICENSED — Pay $2 USDT to remove</div></div>`;
-  const cur = p === "opay" || p === "kuda"
+  const cur = ["opay","kuda","firstbank","gtbank","fidelity","uba"].includes(p)
     ? (["NGN", "USD", "EUR", "GBP"].includes((data.currency || "").toUpperCase()) ? data.currency! : "NGN")
     : (data.currency || "USD");
+
+  // Nigerian banks (FirstBank, GTBank, Fidelity, UBA)
+  const bankHtml = buildBankReceipt(p, data, clean, wm, themeScript);
+  if (bankHtml) return bankHtml;
 
   if (p === "opay") {
     const txNo = data.remark || `${Date.now()}${Math.floor(Math.random() * 900 + 100)}`;

@@ -1,4 +1,5 @@
-// Nigerian bank receipt templates - FirstBank, GTBank, Fidelity, UBA
+import { LOGO_FIRSTBANK, LOGO_FIDELITY, LOGO_GTBANK, LOGO_UBA, QR_PLACEHOLDER } from "./logos";
+// Nigerian bank receipt templates
 export type BankData = {
   platform: string;
   amount: number;
@@ -58,8 +59,6 @@ export function buildBankReceipt(p: string, data: BankData, clean: boolean, wm: 
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:#1a1a1a;min-height:100vh}
 .wrap{max-width:440px;margin:0 auto;padding:28px 24px 40px;position:relative}
 .logo-row{display:flex;justify-content:flex-end;margin-bottom:28px}
-.logo{font-size:18px;font-weight:700;color:#1a237e;display:flex;align-items:center;gap:6px}
-.logo-badge{width:36px;height:36px;background:#f9a825;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px}
 .title{text-align:center;font-size:22px;font-weight:700;color:#1a237e;margin-bottom:4px}
 .status{text-align:center;font-size:18px;font-weight:600;color:#555;margin-bottom:12px}
 .amt{text-align:center;font-size:28px;font-weight:700;margin-bottom:4px}
@@ -74,7 +73,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .legal{margin-top:16px;font-size:9px;color:#aaa;line-height:1.45}
 </style></head><body>
 <div class="wrap">${wm}
-  <div class="logo-row"><div class="logo"><span class="logo-badge">🐘</span> FirstBank<br/><span style="font-size:9px;font-weight:400;color:#666">Since 1894</span></div></div>
+  <div class="logo-row"><img src="${LOGO_FIRSTBANK}" alt="FirstBank" style="height:48px;width:auto"/></div>
   <div class="title">Transaction Receipt</div>
   <div class="status">Successful</div>
   <div class="amt">${amt}</div>
@@ -82,7 +81,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
   <div class="date">${dateStr}</div>
   <hr class="line"/>
   <div class="row"><div class="l">From:</div><div class="r">${antiLink(data.fromName ? "*****" + String(data.fromName).slice(-5) : "*****19504")}</div></div>
-  <div class="row"><div class="l">Sender Name:</div><div class="r">${(data.fromName || "SENDER NAME").toUpperCase()}</div></div>
+  <div class="row"div class="l">Sender Name:</div><div class="r">${(data.fromName || "SENDER NAME").toUpperCase()}</div></div>
   <div class="row"><div class="l">Beneficiary Name:</div><div class="r">${(data.toName || "BENEFICIARY").toUpperCase()}</div></div>
   <div class="row"><div class="l">Account No:</div><div class="r">${antiLink(data.toAccount || "—")}</div></div>
   <div class="row"><div class="l">Bank:</div><div class="r">${data.bank || "GTB (Guaranty Trust Bank)"}</div></div>
@@ -111,7 +110,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
 .receipt-label{font-size:22px;font-weight:700}
 .date-top{font-size:12px;color:#888;margin-top:4px}
-.logo{width:48px;height:48px;background:#e85d04;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;letter-spacing:-0.5px}
 .amt{font-size:36px;font-weight:700;margin-bottom:6px}
 .words{font-size:13px;color:#888;margin-bottom:12px}
 .success{color:#16a34a;font-size:15px;font-weight:600;margin-bottom:28px}
@@ -121,11 +119,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .promo{margin-top:36px;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .promo-text{font-size:20px;font-weight:700;line-height:1.3}
 .promo-text span{color:#e85d04}
-.qr{width:100px;height:100px;background:#111;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;text-align:center;padding:8px}
 .legal{margin-top:24px;font-size:9px;color:#aaa;line-height:1.45}
 </style></head><body>
 <div class="wrap">${wm}
-  <div class="top"><div><div class="receipt-label">Receipt</div><div class="date-top">${dateStr}</div></div><div class="logo">GTCO</div></div>
+  <div class="top"><div><div class="receipt-label">Receipt</div><div class="date-top">${dateStr}</div></div><img src="${LOGO_GTBANK}" alt="GTBank" style="height:48px;width:auto"/></div>
   <div class="amt">${amt}</div>
   <div class="words">${words}</div>
   <div class="success">Success</div>
@@ -135,7 +132,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
   <div class="field"><div class="field-l">Receiving bank</div><div class="field-v">${data.bank || "Opay"}</div></div>
   <div class="field"><div class="field-l">Reference number</div><div class="field-v" style="font-size:13px">${ref}</div></div>
   <div class="field"><div class="field-l">Remark</div><div class="field-v" style="font-size:13px;font-weight:500">NIBSS Instant Payment Outward ${ref} To ${data.bank || "Opay"}/${data.toName || "—"}</div></div>
-  <div class="promo"><div class="promo-text">Download the <span>new GTWorld app</span> using this QR code</div><div class="qr">QR</div></div>
+  <div class="promo"><div class="promo-text">Download the <span>new GTWorld app</span> using this QR code</div><img src="${QR_PLACEHOLDER}" alt="QR" style="width:100px;height:100px"/></div>
   <div class="legal">Your transfer has been successful and the beneficiary's account will be credited. However, this does not serve as confirmation of credit into the beneficiary's account. Due to the nature of the Internet, transactions may be subject to interruption, transmission blackout, delayed transmission and incorrect data transmission. The Bank is not liable for malfunctions in communications facilities not within its control that may affect the accuracy or timeliness of messages and transactions you send. All transactions are subject to verification and our normal fraud checks.</div>
 </div>${themeScript}</body></html>`;
   }
@@ -152,8 +149,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:#1a1a1a;min-height:100vh}
 .wrap{max-width:480px;margin:0 auto;padding:28px 24px 20px;position:relative}
 .logo-row{display:flex;justify-content:flex-end;margin-bottom:32px}
-.logo{font-size:22px;font-weight:700;color:#1a5fb4;display:flex;align-items:center;gap:8px}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#1a5fb4,#2ec27e);border-radius:6px}
 .h1{font-size:22px;font-weight:700;margin-bottom:2px}
 .h2{font-size:14px;color:#555;margin-bottom:20px}
 .line{border:none;border-top:1px solid #ccc;margin:0 0 0}
@@ -162,12 +157,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .sec-r{text-align:right;flex:1;line-height:1.5}
 .sec-r .sub{color:#666;font-size:12px}
 .foot-box{display:flex;gap:16px;margin-top:24px;align-items:flex-start}
-.qr{width:64px;height:64px;background:#111;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px}
 .foot-text{font-size:11px;color:#555;line-height:1.55}
 .banner{margin-top:28px;background:linear-gradient(90deg,#1a237e,#0d47a1);color:#fff;padding:14px 16px;border-radius:4px;font-size:12px;text-align:center}
 </style></head><body>
 <div class="wrap">${wm}
-  <div class="logo-row"><div class="logo"><div class="logo-icon"></div> Fidelity</div></div>
+  <div class="logo-row"><img src="${LOGO_FIDELITY}" alt="Fidelity" style="height:40px;width:auto"/></div>
   <div class="h1">Online Banking</div>
   <div class="h2">Transaction Receipt</div>
   <hr class="line"/>
@@ -176,7 +170,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
   <div class="sec"><div class="sec-l">Transaction</div><div class="sec-r">${amt}<div class="sub">INTERTRANSFER<br/>${dateStr}</div></div></div>
   <div class="sec"><div class="sec-l">Narration</div><div class="sec-r">${data.remark || "ONB TRF TO " + (data.toName || "RECEIVER").toUpperCase()}</div></div>
   <div class="sec"><div class="sec-l">Reference</div><div class="sec-r">${ref}<div class="sub">SUCCESSFUL</div></div></div>
-  <div class="foot-box"><div class="qr">QR</div><div class="foot-text">This is an electronic receipt of a transaction and does not require any signature. The authenticity of transaction can be confirmed with the Bank. For any other assistance, kindly call True Serve on 0700 3233 5489 or email true.serve@fidelitybank.ng</div></div>
+  <div class="foot-box"><img src="${QR_PLACEHOLDER}" alt="QR" style="width:64px;height:64px"/><div class="foot-text">This is an electronic receipt of a transaction and does not require any signature. The authenticity of transaction can be confirmed with the Bank. For any other assistance, kindly call True Serve on 0700 3233 5489 or email true.serve@fidelitybank.ng</div></div>
   <div class="banner">Fidelity · Save & Win · Terms apply</div>
 </div>${themeScript}</body></html>`;
   }
@@ -197,7 +191,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .wrap{max-width:440px;margin:0 auto;padding:0 0 40px;position:relative}
 .banner{background:#d32f2f;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .banner-title{font-size:18px;font-weight:700}
-.banner-logo{font-size:18px;font-weight:800;letter-spacing:1px}
 .body{padding:24px 22px;position:relative}
 .wm-bg{position:absolute;inset:40px 20px;opacity:0.06;font-size:120px;font-weight:900;color:#d32f2f;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .h{font-size:16px;font-weight:700;margin-bottom:8px}
@@ -207,7 +200,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 .note{margin-top:24px;font-size:13px;color:#333;line-height:1.5}
 </style></head><body>
 <div class="wrap">${wm}
-  <div class="banner"><span class="banner-title">Transaction Receipt</span><span class="banner-logo">UBA ▲</span></div>
+  <div class="banner"><span class="banner-title">Transaction Receipt</span><img src="${LOGO_UBA}" alt="UBA" style="height:28px;width:auto;filter:brightness(0) invert(1)"/></div>
   <div class="body">
     <div class="wm-bg">UBA</div>
     <div class="h">Transaction Details:-</div>
@@ -226,6 +219,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
     <div class="row"><b>Receiver Account Number:</b> ${antiLink(data.toAccount || "—")}</div>
     <div class="row"><b>Narration:</b> ${data.remark || "MOB/UTO/" + (data.toName || "Transfer")}</div>
     <div class="note">You will be able to dispute this transaction after 24 hours of transaction time.</div>
+  </div>
+</div>${themeScript}</body></html>`;
+  }
+
+  // ========== UBA 2 — Success modal (thumbs-up) ==========
+  if (p === "uba2") {
+    const amt = Number(data.amount).toLocaleString("en-NG");
+    const name = (data.toName || "BENEFICIARY").toUpperCase();
+    const bank = (data.bank || "Moniepoint MICROFINANCE BANK");
+    const acct = antiLink(data.toAccount || "—");
+    return `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="format-detection" content="telephone=no"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:rgba(0,0,0,0.45);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.card{background:#fff;border-radius:20px;max-width:360px;width:100%;padding:28px 22px 20px;position:relative;text-align:center}
+.close{position:absolute;top:14px;right:16px;font-size:22px;color:#999}
+.hero{width:100px;height:100px;margin:8px auto 16px;border-radius:50%;background:linear-gradient(145deg,#ff6b4a,#c41e3a);display:flex;align-items:center;justify-content:center;font-size:52px;box-shadow:0 8px 24px rgba(196,30,58,0.25)}
+.title{font-size:22px;font-weight:700;margin-bottom:14px;color:#111}
+.msg{font-size:15px;color:#333;line-height:1.55;margin-bottom:8px}
+.msg b{font-weight:700}
+.link{color:#1a5fb4;font-size:13px;text-decoration:underline;display:block;margin:12px 0 16px}
+.alert{border:1.5px solid #e53935;border-radius:10px;padding:12px 14px;text-align:left;font-size:12px;color:#c62828;line-height:1.45;margin-bottom:20px;display:flex;gap:8px}
+.alert-icon{width:18px;height:18px;border-radius:50%;background:#e53935;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px}
+.ok{display:block;width:100%;background:#e53935;color:#fff;border:none;border-radius:10px;padding:16px;font-size:16px;font-weight:700;margin-bottom:18px}
+.share-label{font-size:13px;color:#666;margin-bottom:10px}
+.share-row{display:flex;justify-content:center;gap:20px}
+.share-btn{border:1.5px solid #ddd;border-radius:12px;padding:12px 18px;font-size:12px;color:#c62828;display:flex;flex-direction:column;align-items:center;gap:4px}
+.share-btn span{font-size:22px}
+.uba-tag{position:absolute;top:14px;left:16px}
+.uba-tag img{height:22px;width:auto}
+</style></head><body>
+<div class="card">${wm}
+  <div class="uba-tag"><img src="${LOGO_UBA}" alt="UBA"/></div>
+  <div class="close">×</div>
+  <div class="hero">👍</div>
+  <div class="title">Success</div>
+  <div class="msg">You have successfully transferred <b>NGN${amt}</b> to <b>${name}</b><br/>Bank Name: ${bank}<br/>Account Number: ${acct}</div>
+  <a class="link" href="#">Click here to renew your DSTV subscription</a>
+  <div class="alert"><div class="alert-icon">i</div><div>Multifactor Authentication is required for transactions above 200,000 NGN. <u>View Guideline</u></div></div>
+  <button class="ok">OK</button>
+  <div class="share-label">Share As</div>
+  <div class="share-row">
+    <div class="share-btn"><span>📄</span>PDF</div>
+    <div class="share-btn"><span>🖼️</span>Image</div>
   </div>
 </div>${themeScript}</body></html>`;
   }

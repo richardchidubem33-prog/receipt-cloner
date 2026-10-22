@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const PLATFORMS = [
   { id: "opay", name: "OPay", color: "#1DBF73" },
+  { id: "opay2", name: "OPay 2", color: "#12b76a" },
   { id: "paypal", name: "PayPal", color: "#0070BA" },
   { id: "zelle", name: "Zelle", color: "#6D1ED4" },
   { id: "cashapp", name: "Cash App", color: "#00D632" },
@@ -20,7 +21,7 @@ const PLATFORMS = [
   { id: "uba2", name: "UBA 2", color: "#c41e3a" },
 ];
 
-const BANK_IDS = ["opay", "kuda", "firstbank", "gtbank", "fidelity", "uba", "uba2"];
+const BANK_IDS = ["opay", "opay2", "kuda", "firstbank", "gtbank", "fidelity", "uba", "uba2"];
 
 export default function Home() {
   const [platform, setPlatform] = useState("opay");
@@ -161,11 +162,11 @@ export default function Home() {
           </>
         )}
 
-        {platform === "opay" && (
+        {(platform === "opay" || platform === "opay2") && (
           <>
-            <div className="field"><label>Account Name</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
+            <div className="field"><label>Account Name (Recipient)</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
             <div className="field"><label>Account Number</label><input value={form.toAccount} onChange={(e) => update("toAccount", e.target.value)} /></div>
-            <div className="field"><label>Bank</label><input value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
+            <div className="field"><label>Bank</label><input placeholder="e.g. United Bank For Africa" value={form.bank} onChange={(e) => update("bank", e.target.value)} /></div>
             <div className="field"><label>From (Sender)</label><input value={form.fromName} onChange={(e) => update("fromName", e.target.value)} /></div>
           </>
         )}
@@ -200,7 +201,7 @@ export default function Home() {
           <div className="field"><label>Name / Merchant</label><input value={form.toName} onChange={(e) => update("toName", e.target.value)} /></div>
         )}
 
-        <div className="field"><label>Note / Remark</label><input value={form.remark} onChange={(e) => update("remark", e.target.value)} /></div>
+        <div className="field"><label>Note / Remark / Tx No (optional)</label><input value={form.remark} onChange={(e) => update("remark", e.target.value)} /></div>
 
         <div className="field" style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <input type="checkbox" id="dark" checked={dark} onChange={(e) => setDark(e.target.checked)} style={{ width: 18, height: 18 }} />

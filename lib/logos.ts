@@ -1,6 +1,7 @@
-// Bank logos — public URLs provided by dj
+// Bank logos
 export const LOGO_FIRSTBANK = "https://iconlogovector.com/uploads/images/2024/12/lg-674f9662f31df-First-Bank-of.webp";
-export const LOGO_FIDELITY = "https://allbrandlogos.com.ng/wp-content/uploads/Fidelity-Bank-Nigeria-Logo.svg";
+// Official Fidelity mark (blue/green diagonal) as reliable SVG
+export const LOGO_FIDELITY = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTQwIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImEiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iMTIiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCwwKSI+PGcgY2xpcC1wYXRoPSJ1cmwoI2EpIj48cGF0aCBkPSJNMCAwIEwxMDAgMCBMMTAwIDEwMCBMMCA4MFoiIGZpbGw9IiMwMDJFNjYiLz48cGF0aCBkPSJNMCAyMCBMMTAwIDAgTDEwMCAxMDAgTDAgMTAwIFoiIGZpbGw9IiM2NkI2MzAiLz48cGF0aCBkPSJNMCAwIEwxMDAgMCBMMTAwIDEwMCBMMCA4MCBaIiBmaWxsPSIjMDAyRTY2Ii8+PHBhdGggZD0iTTAgMTAgTDEwMCAwIEwxMDAgMTAwIEwwIDEwMCBaIiBmaWxsPSIjNjZCNjMwIi8+PC9nPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDAgSDEwMCBWMTAwIEgwIFoiIGZpbGw9IiMwMDJFNjYiIGNsaXAtcGF0aD0idXJsKCNhKSIvPjxwYXRoIGQ9Ik0wIDEwMCBMMTAwIDAgTDEwMCAxMDAgWiIgZmlsbD0iIzY2QjYzMCIgY2xpcC1wYXRoPSJ1cmwoI2EpIi8+PC9nPjx0ZXh0IHg9IjYwIiB5PSIxMzAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLFRpbWVzIE5ldyBSb21hbixzZXJpZiIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzAwMkU2NiI+RmlkZWxpdHk8L3RleHQ+PC9zdmc+";
 export const LOGO_GTBANK = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/GTCO_logo.svg/512px-GTCO_logo.svg.png";
 export const LOGO_UBA = "https://www.ubagroup.com/wp-content/uploads/2025/03/UBA-28567.png";
 export const UBA2_HERO = "https://www.ubakenya.com/wp-content/uploads/sites/16/2025/07/leo_uba_thubs_up.png";
